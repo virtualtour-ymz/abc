@@ -1,0 +1,434 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Vazirmatn", "Vazir", "IRANSans", "Segoe UI", Tahoma, sans-serif;
+
+  /* Medical dark palette (teal accent) */
+  --color-brand-50: #052e2b;
+  --color-brand-100: #0a3b36;
+  --color-brand-500: #14b8a6;
+  --color-brand-600: #0d9488;
+  --color-brand-700: #0f766e;
+
+  --animate-pop: pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --animate-shake: shake 0.4s ease-in-out;
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-flame: flame 0.8s ease-in-out infinite alternate;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-bounce-slow: bounceSlow 2s ease-in-out infinite;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes flame {
+  0% { transform: scale(1) rotate(-3deg); filter: drop-shadow(0 0 4px #f97316); }
+  100% { transform: scale(1.12) rotate(3deg); filter: drop-shadow(0 0 12px #f59e0b); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes bounceSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+/* ECG heartbeat line (medical monitor) */
+@keyframes pulseLine {
+  0% { stroke-dashoffset: 640; opacity: 0.4; }
+  55% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0.4; }
+}
+
+/* Single dark medical theme */
+:root {
+  --bg: #0f172a;
+  --bg-soft: #0b1220;
+  --card: #16243a;
+  --card-2: #1e293b;
+  --border: #29384d;
+  --text: #e6eef6;
+  --muted: #8aa0b4;
+  --brand: #14b8a6;
+  --brand-strong: #0d9488;
+  --brand-glow: rgba(20, 184, 166, 0.32);
+}
+
+html {
+  direction: rtl;
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  overscroll-behavior-y: none;
+}
+* {
+  box-sizing: border-box;
+}
+::selection {
+  background: #155e4a;
+  color: #e6eef6;
+}
+input, textarea, select, button {
+  font-family: inherit;
+}
+
+/* Duolingo-style 3D buttons */
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3 font-extrabold uppercase tracking-wide transition-all duration-100 select-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-60;
+  border-bottom-width: 4px;
+  transform: translateY(0);
+}
+.btn:active:not(:disabled) {
+  border-bottom-width: 0;
+  transform: translateY(4px);
+}
+.btn-primary {
+  @apply text-white border-[#0d9488];
+  background: linear-gradient(160deg, #14b8a6, #0e9f9c);
+}
+.btn-primary:hover {
+  background: linear-gradient(160deg, #17c4b0, #10ada9);
+}
+.btn-brand {
+  @apply text-white border-[#0f766e];
+  background: linear-gradient(135deg, #14b8a6, #06b6d4);
+}
+.btn-secondary {
+  @apply text-[#2dd4bf] border-[#29384d] hover:bg-[#1b2b45];
+  background: var(--card);
+}
+.btn-danger {
+  @apply bg-[#ff6b6b] text-white border-[#e05252] hover:bg-[#ff7d7d];
+}
+.btn-ghost {
+  @apply bg-transparent text-[#2dd4bf] border-transparent hover:bg-[#0f2e2a];
+}
+
+/* Cards */
+.card {
+  @apply rounded-2xl border-2;
+  background: var(--card);
+  border-color: var(--border);
+}
+.card-3d {
+  @apply rounded-2xl border-2 border-b-4;
+  background: var(--card);
+  border-color: var(--border);
+}
+
+/* Option choice */
+.choice {
+  @apply w-full text-right rounded-2xl border-2 border-b-4 px-4 py-4 text-base font-bold transition-all duration-100 cursor-pointer;
+  background: var(--card);
+  border-color: var(--border);
+  color: var(--text);
+}
+.choice:hover:not(:disabled) {
+  background: var(--card-2);
+}
+.choice:active:not(:disabled) {
+  border-bottom-width: 2px;
+  transform: translateY(2px);
+}
+.choice.selected {
+  @apply border-[#2dd4bf] bg-[#0f2e2a] text-[#2dd4bf];
+}
+.choice.correct {
+  @apply border-[#34d399] bg-[#0e2e24] text-[#4ade80];
+}
+.choice.wrong {
+  @apply border-[#ff6b6b] bg-[#3b1d1d] text-[#ff8f8f];
+}
+
+.text-muted {
+  color: var(--muted);
+}
+.bg-soft {
+  background: var(--bg-soft);
+}
+.border-soft {
+  border-color: var(--border);
+}
+
+/* Progress bar shine */
+.progress-shine {
+  position: relative;
+  overflow: hidden;
+}
+.progress-shine::after {
+  content: "";
+  position: absolute;
+  inset: 4px 8px auto 8px;
+  height: 30%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* Path nodes */
+.node-btn {
+  @apply relative flex items-center justify-center rounded-full text-3xl transition-transform duration-100 cursor-pointer;
+  width: 76px;
+  height: 76px;
+  border-bottom-width: 8px;
+}
+.node-btn:active:not(:disabled) {
+  border-bottom-width: 0;
+  transform: translateY(8px);
+}
+.node-btn:disabled {
+  cursor: not-allowed;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Flashcard flip */
+.flip-card {
+  perspective: 1200px;
+}
+.flip-inner {
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+.flip-inner.flipped {
+  transform: rotateY(180deg);
+}
+.flip-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-back {
+  transform: rotateY(180deg);
+  position: absolute;
+  inset: 0;
+}
+
+/* ECG heartbeat line */
+.ecg-line {
+  stroke-dasharray: 640;
+  stroke-dashoffset: 640;
+  animation: pulseLine 2.4s linear infinite;
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ---------- Phase 3: polish & motion ---------- */
+
+/* Accessible focus ring */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Subtle dark scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a4d66;
+}
+
+/* Card micro-interaction (lift + glow on hover) */
+.card {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+  }
+}
+
+/* Primary / brand button glow */
+.btn-primary:hover,
+.btn-brand:hover {
+  box-shadow: 0 8px 22px var(--brand-glow);
+}
+.btn-danger:hover {
+  box-shadow: 0 8px 22px rgba(255, 107, 107, 0.3);
+}
+
+/* Entrance keyframes (usable from server components) */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-up {
+  animation: fadeUp 0.5s ease-out both;
+}
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+
+/* ---------- Mascot («پُرس») — rigged SVG ---------- */
+.m-float {
+  animation: mFloat 3.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.m-sway {
+  animation: mSway 3.2s ease-in-out infinite;
+}
+.m-jump {
+  animation: mJump 1.05s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+
+.m-body {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: mBreathe 3.6s ease-in-out infinite;
+}
+.m-head {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.m-sway .m-head {
+  animation: mHeadTilt 3.2s ease-in-out infinite;
+}
+.m-wing,
+.m-wing-static {
+  transform-box: fill-box;
+  transform-origin: 50% 14%;
+  transition: transform 0.4s ease;
+}
+.m-wing-wave {
+  animation: mWingWave 2.8s ease-in-out infinite;
+}
+.m-wing-up {
+  transform: rotate(-48deg);
+}
+.m-wing-droop {
+  transform: rotate(30deg);
+  animation: mWingDroop 3.2s ease-in-out infinite;
+}
+.m-brow {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.m-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mBlink 4.4s infinite;
+}
+.m-tear {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+  animation: mTear 2.2s ease-in infinite;
+}
+.m-heart {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mHeart 1.5s ease-in-out infinite;
+}
+.m-spark {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mSpark 1.6s ease-in-out infinite;
+}
+.m-comfort-glow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mSpark 2.4s ease-in-out infinite;
+}
+.m-shadow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mShadow 3.6s ease-in-out infinite;
+}
+
+@keyframes mFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes mSway {
+  0%, 100% { transform: rotate(-2.5deg) translateY(0); }
+  50% { transform: rotate(2.5deg) translateY(2px); }
+}
+@keyframes mJump {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  35% { transform: translateY(-12px) scale(0.98, 1.04); }
+  55% { transform: translateY(0) scale(1.05, 0.94); }
+  75% { transform: translateY(-4px) scale(0.99, 1.02); }
+}
+@keyframes mBreathe {
+  0%, 100% { transform: scale(1, 1); }
+  50% { transform: scale(1.012, 1.03); }
+}
+@keyframes mHeadTilt {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-3deg); }
+}
+@keyframes mWingWave {
+  0%, 100% { transform: rotate(0deg); }
+  22%, 52% { transform: rotate(-46deg); }
+  76% { transform: rotate(-10deg); }
+}
+@keyframes mWingDroop {
+  0%, 100% { transform: rotate(30deg); }
+  50% { transform: rotate(22deg); }
+}
+@keyframes mBlink {
+  0%, 46%, 100% { transform: scaleY(1); }
+  48%, 52% { transform: scaleY(0.08); }
+}
+@keyframes mTear {
+  0% { opacity: 0; transform: translateY(0) scale(0.6); }
+  15% { opacity: 1; transform: translateY(0) scale(1); }
+  70% { opacity: 1; transform: translateY(10px) scale(1); }
+  100% { opacity: 0; transform: translateY(12px) scale(0.8); }
+}
+@keyframes mHeart {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
+@keyframes mSpark {
+  0%, 100% { opacity: 0; transform: scale(0.3); }
+  50% { opacity: 1; transform: scale(1); }
+}
+@keyframes mShadow {
+  0%, 100% { transform: scale(1, 1); opacity: 1; }
+  50% { transform: scale(0.92, 0.92); opacity: 0.75; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-float, .m-sway, .m-jump, .m-body, .m-sway .m-head, .m-wing-wave, .m-wing-droop,
+  .m-eye, .m-tear, .m-heart, .m-spark, .m-comfort-glow, .m-shadow {
+    animation: none !important;
+  }
+}
